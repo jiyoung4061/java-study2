@@ -30,5 +30,8 @@
 	
 	<modules>
 		<module>parksystem</module>
+		<module>practice01</module>
+		<module>practice02</module>
+		<module>java-opp</module>
 	</modules>
 </project>
