@@ -10,6 +10,7 @@ public class Prob01 {
 		System.out.print("수를 입력하세요:");
 		int number = scanner.nextInt();
 		System.out.println(number);
+		scanner.close();
 	}
 
 }
