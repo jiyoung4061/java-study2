@@ -33,5 +33,6 @@
 		<module>practice01</module>
 		<module>practice02</module>
 		<module>java-opp</module>
+		<module>io</module>
 	</modules>
 </project>
