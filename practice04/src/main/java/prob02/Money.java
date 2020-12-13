@@ -1,4 +1,4 @@
-package practice04;
+package prob02;
 
 public class Money {
 	int amount; // immutable(불변)

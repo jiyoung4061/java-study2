@@ -1,4 +1,4 @@
-package practice04;
+package prob05;
 
 public abstract class Shape {
 	public abstract double getArea(); //넓이

@@ -1,4 +1,4 @@
-package practice04;
+package prob05;
 
 public class Rectangle extends Shape implements Resizable {
 	double width;
