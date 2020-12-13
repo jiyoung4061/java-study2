@@ -1,4 +1,4 @@
-package practice05;
+package prob05;
 
 public class Account {
 	String accountNo;
