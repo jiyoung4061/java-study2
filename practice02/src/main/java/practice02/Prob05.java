@@ -12,9 +12,9 @@ public class Prob05 {
 		String line = scanner.nextLine();
 		String[] tokens = line.split(" ");
 		
+		String operator = tokens[2];
 		int lValue = Integer.parseInt(tokens[0]);
-		int rValue = Integer.parseInt(tokens[2]);
-		String operator = tokens[1];
+		int rValue = Integer.parseInt(tokens[1]);
 		int result=0;
 		
 		switch(operator) {
@@ -47,7 +47,6 @@ public class Prob05 {
 			}
 		}
 		System.out.println(">> "+result);
-		System.out.println(">> quit");
 		scanner.close();
 	}
 
