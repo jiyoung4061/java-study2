@@ -7,6 +7,7 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 
 public class TCPServer {
 
@@ -46,27 +47,29 @@ public class TCPServer {
 						System.out.println("[server] close by client");
 						break;
 					}
-					
+
 					String data = new String(buffer, 0, readByteCount, "UTF-8");
-					System.out.println("[server] receive: "+data);
-					
+					System.out.println("[server] receive: " + data);
+
 					// 6. 데이터 쓰기
 					os.write(data.getBytes("UTF-8"));
 				}
-				
-				
+
+			} catch (SocketException e) {
+				// server 비정상 종료
+				System.out.println("[client] suddenly closed by server");
 			} catch (IOException e) {
-				System.out.println("[server] error:"+e);
+				System.out.println("[server] error:" + e);
 			} finally {
-				try {			
-					if(socket!= null && !socket.isClosed())
-					socket.close();
-				} catch(IOException e) {
+				try {
+					if (socket != null && !socket.isClosed())
+						socket.close();
+				} catch (IOException e) {
 					e.printStackTrace();
 				}
 			}
 
-		} catch (IOException e) { //server에서 exception발생시
+		} catch (IOException e) { // server에서 exception발생시
 			System.out.println("[server] error:" + e);
 		} finally {
 			try {

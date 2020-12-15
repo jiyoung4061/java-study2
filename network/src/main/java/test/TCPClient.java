@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketException;
 
 public class TCPClient {
 
@@ -43,6 +44,9 @@ public class TCPClient {
 			data = new String(buffer, 0 , readByteCount, "UTF-8");
 			System.out.println("[client] received:" + data);
 			
+		} catch(SocketException e) {
+			// server 비정상 종료
+			System.out.println("[client] suddenly closed by server");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			System.out.println("[client] error:" + e);
