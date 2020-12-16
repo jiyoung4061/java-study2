@@ -16,12 +16,10 @@ public class EchoServer {
 			// 1. 서버 소켓 생성
 			serverSocket = new ServerSocket();
 
-			// 2. 바인딩(binding): Socket Address(IP Address + Port) => 노트 필기
+			// 2. 바인딩(binding)
 			serverSocket.bind(new InetSocketAddress("127.0.0.1", PORT));
 
-//			System.out.println("blocking 안됨"); // blocking안되면 이거 출력됨
 			// 3. accept
-
 			while(true) {
 				Socket socket = serverSocket.accept(); // blocking(프로그램 멈춤)
 				new EchoServerReceiveThread(socket).start();

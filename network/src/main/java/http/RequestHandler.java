@@ -9,7 +9,7 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.nio.file.Files;
 
-public class RequestHandler extends Thread {
+public class RequestHandler extends Thread { // Tread임!
 	private Socket socket;
 	private static final String DOCUMENT_ROOT="./webapp";
 	
@@ -22,7 +22,7 @@ public class RequestHandler extends Thread {
 		try {
 			// get IOStream 
 			// outputstream사용하는 이유?
-			// web서버는 string뿐만아니라 html, image등도 보내야함 그래서 byte로 처리해야하므로			
+			// web서버는 string뿐만아니라 html, image등도 보내야함 그래서 byte로 처리하기위해 outputstream사용		
 			OutputStream outputStream = socket.getOutputStream();
 			BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
 			
@@ -34,8 +34,7 @@ public class RequestHandler extends Thread {
 			while(true) {
 				String line = br.readLine();
 
-				// 브라우저가 연결을 끊음
-				if(line == null){
+				if(line == null){ // 브라우저가 연결을 끊음
 					consoleLog("closed by client");
 					break;
 				}
@@ -52,12 +51,13 @@ public class RequestHandler extends Thread {
 			if("GET".equals(tokens[0])) {
 				responseStaticResource(outputStream, tokens[1], tokens[2]);
 			} else { // POST, DELETE, PUT, HEAD, CONNECT				
-				// HTTP/1.1 400 Bad Request\r\n
-				// Content-Type:text/html; charset=utf-8\r\n
-				// \r\n
-				// html 에러 문서(./webapp/error/400.html)
-				
-				//response404Error();
+				/* 
+				HTTP/1.1 400 Bad Request\r\n
+				Content-Type:text/html; charset=utf-8\r\n
+				\r\n
+				html 에러 문서(./webapp/error/400.html)
+				 */
+//				response404Error();
 			}
 
 		} catch( Exception ex ) {
@@ -75,10 +75,12 @@ public class RequestHandler extends Thread {
 	}
 
 	public void responseStaticResource(OutputStream outputStream, String uri, String protocol) throws IOException{ //uri : resource의 위치
+		// throws IOException : 해당 함수를 호출하는 쪽에서 try catch해주어야함! 
 		if("/".equals(uri)) {
 			uri = "/index.html";
 		}
 		
+		// file생성 후, 존재하지 않으면 404error
 		File file = new File(DOCUMENT_ROOT + uri);
 		if(!file.exists()) {
 			// 404 Not Found
@@ -86,7 +88,7 @@ public class RequestHandler extends Thread {
 			return;
 		}
 		
-		// nio
+		// nio(new io)
 		byte[] body = Files.readAllBytes(file.toPath());
 		String contentType = Files.probeContentType(file.toPath());
 		//response

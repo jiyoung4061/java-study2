@@ -30,12 +30,12 @@ public class EchoServerReceiveThread extends Thread {
 		try {
 			// 4. io stream 받아오기
 			BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
-			PrintWriter pw = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), "UTF-8"), true); // flush?
+			PrintWriter pw = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), "UTF-8"), true); 
+			// flush? buffer가 차면 자동으로 비워줌
 
 			while (true) {
 				// 5. 데이터 읽기
-
-				String data = br.readLine();
+				String data = br.readLine(); //bufferedreader에서 개행문자가 들어올때까지 읽음
 
 				if (data == null) {
 					// clinet가 socket을 정상적으로 공유했다는 뜻(정상 종료)

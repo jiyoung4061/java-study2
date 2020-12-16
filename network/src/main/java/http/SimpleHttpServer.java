@@ -26,7 +26,7 @@ public class SimpleHttpServer {
 				// 3. Wait for connecting ( accept )
 				Socket socket = serverSocket.accept();
 
-				// 4. Delegate Processing Request 요청 처리를 thread에 위임
+				// 4. Delegate Processing Request : 요청 처리를 thread에 위임
 				new RequestHandler(socket).start();
 			}
 

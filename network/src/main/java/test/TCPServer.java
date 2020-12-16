@@ -59,7 +59,8 @@ public class TCPServer {
 				}
 
 			} catch (SocketException e) {
-				// server 비정상 종료
+				// server 비정상 종료(client에서 일방적으로 어플리케이션을 끊는 경우)
+				// SocketException은 IOException의 자식으로 IOException보다 뒤로 올 경우 다 IOException에 걸려서 안됨!
 				System.out.println("[client] suddenly closed by server");
 			} catch (IOException e) { //데이터 통신시 소켓에서 exception발생할 때
 				System.out.println("[server] error:" + e);

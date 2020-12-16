@@ -48,7 +48,6 @@ public class TCPClient {
 			// server 비정상 종료
 			System.out.println("[client] suddenly closed by server");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			System.out.println("[client] error:" + e);
 		} finally {
 			try {
