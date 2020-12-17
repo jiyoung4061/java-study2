@@ -30,10 +30,13 @@ public class ChatWindow {
 	}
 
 	public void show() {
+		/*
+		 * 1. UI 초기화
+		 */
 		// Button
 		buttonSend.setBackground(Color.GRAY);
 		buttonSend.setForeground(Color.WHITE);
-		buttonSend.addActionListener( new ActionListener() {
+		buttonSend.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed( ActionEvent actionEvent ) {
 				sendMessage();
@@ -42,6 +45,15 @@ public class ChatWindow {
 
 		// Textfield
 		textField.setColumns(80);
+		textField.addKeyListener(new KeyAdapter(){
+			@Override
+			public void keyReleased(KeyEvent e) {
+				char keyCode = e.getKeyChar();
+				if(keyCode == KeyEvent.VK_ENTER) {
+					sendMessage();
+				}
+			}
+		});
 
 		// Pannel
 		pannel.setBackground(Color.LIGHT_GRAY);
@@ -56,13 +68,40 @@ public class ChatWindow {
 		// Frame
 		frame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
+				System.out.println("채팅방 나오기 프로토콜 구현...");
 				System.exit(0);
 			}
 		});
 		frame.setVisible(true);
 		frame.pack();
+		
+		/*
+		 * 2. IOStream 초기화
+		 */
+		
+		
+		/*
+		 * 3. 쓰레드 생성
+		 */
 	}
 	
 	private void sendMessage() {
+		String message = textField.getText();
+		textField.setText("");
+		textField.requestFocus();
+		
+		// 소켓을 통해 전송
+		
+		// 소켓을 통해 메세지가 온 경우(실제로는 쓰레드에서 있어야 하는 코드...)
+		textArea.append("둘리:" + message);
+		textArea.append("\n");
+	}
+
+	
+	public class ChatClientThread extends Thread{
+		@Override
+		public void run() {
+		}
+		
 	}
 }

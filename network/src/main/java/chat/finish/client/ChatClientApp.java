@@ -21,7 +21,13 @@ public class ChatClientApp {
 		}
 		
 		scanner.close();
-
+		
+		//1. socket 생성
+		//2. connect to Server
+		//3. iostream 생성
+		//4. join 프로토콜 요청 및 처리
+		//5. join 프로토콜 응당이 성공이면
+		//   new ChatWindow(name, socket).show();
 		new ChatWindow(name).show();
 	}
 
