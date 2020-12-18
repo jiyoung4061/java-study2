@@ -12,6 +12,14 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.Socket;
+import java.net.SocketException;
 
 public class ChatWindow {
 
@@ -20,6 +28,7 @@ public class ChatWindow {
 	private Button buttonSend;
 	private TextField textField;
 	private TextArea textArea;
+	private Socket socket = null;
 
 	public ChatWindow(String name) {
 		frame = new Frame(name);
@@ -27,6 +36,10 @@ public class ChatWindow {
 		buttonSend = new Button("Send");
 		textField = new TextField();
 		textArea = new TextArea(30, 80);
+	}
+	
+	public ChatWindow(String name, Socket socket) {
+		this.socket = socket;
 	}
 
 	public void show() {
@@ -83,6 +96,7 @@ public class ChatWindow {
 		/*
 		 * 3. 쓰레드 생성
 		 */
+		new ChatClientThread(socket).start();
 	}
 	
 	private void sendMessage() {
@@ -91,17 +105,40 @@ public class ChatWindow {
 		textField.requestFocus();
 		
 		// 소켓을 통해 전송
-		
+		try {
+			BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
+			while (true) {
+				try {
+					message = br.readLine(); // socketexception발생
+				} catch (SocketException e) {
+					System.out.println("socket exception 발생");
+				}
+				if (message == null) {
+					break;
+				}
+			}
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {			
 		// 소켓을 통해 메세지가 온 경우(실제로는 쓰레드에서 있어야 하는 코드...)
 		textArea.append("둘리:" + message);
 		textArea.append("\n");
+		}
 	}
 
 	
 	public class ChatClientThread extends Thread{
+		Socket socket = null;
+		
+		public ChatClientThread(Socket socket) {
+			this.socket = socket;
+		}
+
 		@Override
 		public void run() {
+			sendMessage();
 		}
-		
 	}
 }
