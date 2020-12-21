@@ -51,13 +51,7 @@ public class RequestHandler extends Thread { // Tread임!
 			if("GET".equals(tokens[0])) {
 				responseStaticResource(outputStream, tokens[1], tokens[2]);
 			} else { // POST, DELETE, PUT, HEAD, CONNECT				
-				/* 
-				HTTP/1.1 400 Bad Request\r\n
-				Content-Type:text/html; charset=utf-8\r\n
-				\r\n
-				html 에러 문서(./webapp/error/400.html)
-				 */
-//				response404Error();
+				response400Error(outputStream, tokens[1], tokens[2]);
 			}
 
 		} catch( Exception ex ) {
@@ -74,6 +68,42 @@ public class RequestHandler extends Thread { // Tread임!
 		}			
 	}
 
+	public void response400Error(OutputStream outputStream, String uri, String protocol) throws IOException{
+		uri = "/error/400.html";
+		
+		File file = new File(DOCUMENT_ROOT + uri);
+		if(!file.exists()) {
+			response404Error(outputStream, uri, protocol);
+			return;
+		}
+		
+		byte[] body = Files.readAllBytes(file.toPath());
+		String contentType = Files.probeContentType(file.toPath());
+		/* 
+		HTTP/1.1 400 Bad Request\r\n
+		Content-Type:text/html; charset=utf-8\r\n
+		\r\n
+		html 에러 문서(./webapp/error/400.html)
+		 */
+		outputStream.write((protocol + " 400 Bad Request\r\n").getBytes( "UTF-8" ));
+		outputStream.write(("Content-Type:" + contentType + "; charset=utf-8\r\n").getBytes("UTF-8"));
+		outputStream.write("\r\n".getBytes("UTF-8"));
+		outputStream.write(body);
+	}
+	
+	public void response404Error(OutputStream outputStream, String uri, String protocol) throws IOException{
+		uri = "/error/404.html";
+		File file = new File(DOCUMENT_ROOT+uri);
+		
+		byte[] body = Files.readAllBytes(file.toPath());
+		String contentType = Files.probeContentType(file.toPath());
+		
+		outputStream.write((protocol + " 404 BadRequest\r\n").getBytes( "UTF-8" ));
+		outputStream.write(("Content-Type:" + contentType + "; charset=utf-8\r\n").getBytes("UTF-8"));
+		outputStream.write("\r\n".getBytes("UTF-8"));
+		outputStream.write(body);
+	}
+	
 	public void responseStaticResource(OutputStream outputStream, String uri, String protocol) throws IOException{ //uri : resource의 위치
 		// throws IOException : 해당 함수를 호출하는 쪽에서 try catch해주어야함! 
 		if("/".equals(uri)) {
@@ -84,7 +114,7 @@ public class RequestHandler extends Thread { // Tread임!
 		File file = new File(DOCUMENT_ROOT + uri);
 		if(!file.exists()) {
 			// 404 Not Found
-			// response404Error();
+			response404Error(outputStream, uri, protocol);
 			return;
 		}
 		
@@ -97,6 +127,7 @@ public class RequestHandler extends Thread { // Tread임!
 		outputStream.write("\r\n".getBytes("UTF-8"));
 		outputStream.write(body);
 	}
+	
 	public void consoleLog( String message ) {
 		System.out.println( "[RequestHandler#" + getId() + "] " + message );
 	}
