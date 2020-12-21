@@ -72,10 +72,6 @@ public class RequestHandler extends Thread { // Tread임!
 		uri = "/error/400.html";
 		
 		File file = new File(DOCUMENT_ROOT + uri);
-		if(!file.exists()) {
-			response404Error(outputStream, uri, protocol);
-			return;
-		}
 		
 		byte[] body = Files.readAllBytes(file.toPath());
 		String contentType = Files.probeContentType(file.toPath());
